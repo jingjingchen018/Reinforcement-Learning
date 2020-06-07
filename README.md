@@ -13,6 +13,7 @@ I read the abstract and the introduction of this paper, meanwhile, watched the v
 
 
 the main content of Chapter2 comes from the work of Azar et al.
+
 [2]Azar M G, Munos R, Kappen H J. Minimax PAC bounds on the sample complexity of reinforcement learning with a generative model[J]. Machine learning, 2013, 91(3): 325-349.
 
 #### 1.2 the major contributions
