@@ -1,37 +1,22 @@
-# Reinforcement Learning
- theory and algorithms of RL
-
 # Reinforcement Learning: Theory and Algorithms
 
-## 1 Papers I have read
+## Slides and notes  of Alessandro Lazaric (more theory)
 
-### 
+http://researchers.lille.inria.fr/~lazaric/Webpage/MVA-RL_Course16.html
 
-#### the major contributions
+![image-20201012200734241](/Users/chenjingjing/Library/Application Support/typora-user-images/image-20201012200734241.png)
 
-#### Comments
+## Slides of RLChina
 
+https://rlchina.org 
 
-### 
+Slides related to RL 
 
-#### the major contributions
+## Slides of 
 
-#### Comments
+## Slides of Zhou Bolei
 
-### 
+more basic
 
-#### the major contributions
+https://github.com/zhoubolei/introRL
 
-#### Comments
-
-### 
-
-#### the major contributions
-
-#### Comments
-
-## 2 Research work I have done
-
-what issues I tried to solve: 
-progress
-why I  succeed or why I failed. 
