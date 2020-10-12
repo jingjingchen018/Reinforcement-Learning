@@ -12,14 +12,12 @@ https://rlchina.org
 
 Slides related to RL 
 
-## Slides of 
-
 ## Slides of Zhou Bolei
 
 more basic
 
 https://github.com/zhoubolei/introRL
-=======
+
 ## the RL working draft
 
 The second chapter of this RL working draft aims to characterize the optimal minimax sample complexity of estimating the optimal state-action value $Q^{\star}$ with a generative model $\hat{P}$. To get a better understanding about the content of this chapter, I read three articles about it. 
