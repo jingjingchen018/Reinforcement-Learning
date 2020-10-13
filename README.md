@@ -4,8 +4,6 @@
 
 http://researchers.lille.inria.fr/~lazaric/Webpage/MVA-RL_Course16.html
 
-![image-20201012200734241](/Users/chenjingjing/Library/Application Support/typora-user-images/image-20201012200734241.png)
-
 ## (2) Slides of RLChina
 
 https://rlchina.org 
@@ -17,6 +15,12 @@ Slides related to RL
 more basic
 
 https://github.com/zhoubolei/introRL
+
+## (4) RL working draft 
+
+
+
+## (5) papers I read
 
 
 
