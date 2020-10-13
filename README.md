@@ -18,6 +18,5 @@ more basic
 
 https://github.com/zhoubolei/introRL
 
-## the RL working draft
 
 
