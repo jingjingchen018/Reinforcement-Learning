@@ -69,3 +69,6 @@ where $\tau$>0, the temperature, controls the randomness of the exploration. Whe
 (b)
 
 (c)
+
+## Questions: ? How to exchange information within many agents??? Or which strategies can be used to realize the communication among agents?
+
