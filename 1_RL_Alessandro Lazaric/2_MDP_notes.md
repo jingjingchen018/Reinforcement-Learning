@@ -150,6 +150,8 @@ r(s,a)=\sum_{s^{\prime}}p(s^{\prime}|s,a)r(s,a,s^{\prime})\\
 $$
 Note: 上式不一定准确，（所以我还是有一点点迷惑$R_{t+1}=r(s_{t},a_{t})$）
 
+在deterministic  policy 下，$r(s,a)不一定=r(s,a,s^{\prime})$
+
 why it's so important?
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -206,6 +208,8 @@ Note: 状态值函数和策略$\pi$  是相对应的，这是因为策略$\pi$ �
 
 %%%%%%%%%%%%%%%
 
+In MDPs,  there always exists a deterministic stationary policy (that simultaneously maximizes the value of every state) 
+
 %%%%%%%%%%%%%%%
 
  Definition6: 
@@ -232,15 +236,16 @@ V_{\pi}(s)  =\mathbb{E}_{\pi}\left[\sum_{k=0}^{\infty}\gamma^{k} R_{t+k+1}|S_{t}
  \stackrel{(a)}=\mathbb{E}_{S_{t}}[R_{t+1}+\gamma \mathbb{E}_{S_{t+1},\cdots}[G_{t+1}] | S_{t}=s]\\
   \stackrel{(b)}=\mathbb{E}_{S_{t}}[R_{t+1}+\gamma \mathbb{E}_{S_{t+1},\cdots}[G_{t+1}|S_{t+1}] | S_{t}=s]\\
 \stackrel{(c)}=\mathbb{E}_{S_{t}}[R_{t+1}+\gamma V_{\pi}(S_{t+1})|S_{t}=s]\\
-    \stackrel{(d)}=\mathbb{E}[R_{t+1}+\gamma V_{\pi}(S_{t+1})|S_{t}=s]\\ 按照条件期望公式展开\\
+    \stackrel{(d)}=\mathbb{E}_{\pi}[R_{t+1}+\gamma V_{\pi}(S_{t+1})|S_{t}=s]\\ 按照条件期望公式展开,\pi 决定了在状态S_{t}要采取的动作\\
         \stackrel{(e)}=\sum_{a\in A}\pi(a|s)[r(s,a)+\gamma \sum_{s^{\prime}}P(s^{\prime}|s,a)V_{\pi}(s^{\prime})]\\
        \stackrel{(f)}= \sum_{a\in A}\pi(a|s)r(s,a)+\gamma \sum_{a\in A}\pi(a|s)\sum_{s^{\prime}}P(s^{\prime}|s,a)V_{\pi}(s^{\prime})\\
        \stackrel{(g交换变量求和顺序)}= \sum_{a\in A}\pi(a|s)r(s,a)+\gamma \sum_{s^{\prime}} \sum_{a\in A}\pi(a|s)P(s^{\prime}|s,a)V_{\pi}(s^{\prime})\\
        \stackrel{(h)}= r(s,\pi(s))+\gamma \sum_{s^{\prime}} P(s^{\prime}|s)V_{\pi}(s^{\prime})\\
+         \stackrel{(i)}= r(s,\pi(s))+\gamma \sum_{s^{\prime}} P(s^{\prime}|s,\pi(s))V_{\pi}(s^{\prime})\\
        这里的r(s,\pi(s)) 既可以是deterministic,也可stochastic的回报\\
         写成向量的形式\\        
         V=R+\gamma PV\\
-        V=(I-PV)^{-1}R
+        V=(I-\gamma P)^{-1}R
 $$
 **Note:** (a) 注意是对哪些变量求期望
 
@@ -300,7 +305,7 @@ V^{*}(s)  = \max_{\pi}V_{\pi}(s)\\
 $$
 最优的state-action value function 为在所有策略对应的状态行为值函数中取值最大的状态行为值函数。
 $$
-q^{*}(s, a) =\max_{\pi} q_{\pi}(s,a)\\=R_{s}^{a}+\gamma \sum_{s^{\prime} \in S} P\left(s^{\prime} \mid s, a\right)\max_{a^{\prime}} q^{*}\left(s^{\prime},a^{\prime}\right)\\=\mathbb{E}[\max(r.v.)
+q^{*}(s, a) =\max_{\pi} q_{\pi}(s,a)\\=R_{s}^{a}+\gamma \sum_{s^{\prime} \in S} P\left(s^{\prime} \mid s, a\right)\max_{a^{\prime}} q^{*}\left(s^{\prime},a^{\prime}\right)\\=\mathbb{E}[\max(r.v.)]
 $$
 若已知optimal state-action value function, we can obtain optimal policy by maximizing $q^{*}(s, a)$ directly.
 $$
@@ -343,13 +348,6 @@ $$
 =\max_{\pi}\mathrm{E}_{\tau \sim \rho(\tau)}[\sum_{t=0}^{T}\gamma^{t}r(s_{t},a_{t})]
 $$
 
-
-
-
-
-
-
-
 ### Slide 7  policy gradient method
 
 直接对policy 进行参数化
@@ -357,12 +355,6 @@ $$
 V_{\pi}(s) = \sum_{a\in A}\pi(a|s;\theta)q_{\pi}(s, a)
 $$
 张志华是对这个公式进行求导的。最后得出REINFORCE 法。
-
-
-
-
-
-
 
 ### Slide 8 机器学习
 
@@ -381,22 +373,64 @@ $$
 $$
 在机器学习中，牛顿法、最速下降法，等等迭代公式都是这样更新参数的。
 
-
-
-
-
 ### Slide 9 RL REINFPRCE   算法。
 
-因为在这里policy 是被参数化的，$\pi_{\theta}$ 相应的期望值就是$\mathrm{E}_{\pi_{\theta}}[G_{t}|S_{t}=s]$
+在这里policy 是被参数化的，对于参数化的policy $\pi_{\theta}$, 它的trajectory $\tau=(s_{1},a_{1},s_{2},a_{2},...)$, 累计回报为$R(\tau)=\sum_{t=1}^{T}\gamma^{t}r(s_{t},a_{t})$
 
-对于参数化的policy $\pi_{\theta}$
+(这里也应该是用大写来表示随机变量)
+
+参考的推导过程是累计回报为$R(\tau)=\sum_{t=1}^{T}\gamma^{t}r(s_{t},a_{t},s_{t+1})$
+
+所以都是默认deterministic policy?????????????????
+
+$\pi_{\theta}$ 相应的期望值就是
 $$
-\max_{\pi}\int R(\tau)p_{\pi}(\tau)d\tau\\
-=\max_{\pi}\mathrm{E}_{\tau \sim \rho(\tau)}[\sum_{t=0}^{T}\gamma^{t}r(s_{t},a_{t})]
+J(\theta):=\mathrm{E}_{\tau \sim p(\tau; \theta)}[\sum_{t=1}^{T}\gamma^{t}r(s_{t},a_{t})]\\
+=\int R(\tau)p(\tau;\theta)d\tau \tag{9.2}
 $$
+又 因为轨迹的markov性，那么轨迹的概率为
+$$
+p(\tau;\theta)=p(s_{1})\prod_{t=1}^{T-1}p(s_{t+1}|s_{t},a_{t})\pi(a_{t}|s_{t};\theta)
+$$
+要求optimal policy,即求最优的参数$\theta^{*}$
+$$
+\theta^{*}=\arg\max_{\theta}J(\theta)
+$$
+但是$J(\theta)$并不好求，这时候我们通过对其求导来更新参数
+$$
+\theta_{n+1}=\theta_{n}+\alpha\nabla J(\theta_{n})
+$$
+其中，（这里也可以写成求和公式），
+$$
+\nabla J(\theta)=\nabla_{\theta} \int R(\tau)p(\tau;\theta)d\tau \\
+=\int R(\tau)\nabla_{\theta} p(\tau;\theta)d\tau \\
+=\int R(\tau)p(\tau;\theta)\frac{\nabla_{\theta} p(\tau;\theta)}{p(\tau;\theta)}d\tau \\
+= \int p(\tau;\theta)R(\tau)\nabla_{\theta}\ln p(\tau;\theta)d\tau \\
+= \mathrm{E}_{\tau \sim p(\tau;\theta)}[R(\tau)\nabla_{\theta}\ln p(\tau;\theta)] \\
+通过经验平均估计(即通过*采样*m条轨迹后，去计算策略梯度)\\
+把轨迹的概率公式展开\\
+= \mathrm{E}_{\tau\sim p(\tau;\theta)}[R(\tau)\nabla_{\theta}\ln p(\tau;\theta)] \\
+p(s_{1})\prod_{t=1}^{T-1}p(s_{t+1}|s_{t},a_{t})\pi(a_{t}|s_{t};\theta) 求ln之后再对
+\theta 求导为0  \\
+= \mathrm{E}_{\tau \sim p(\tau;\theta)}[R(\tau) \sum_{t=1}^{T-1} \nabla_{\theta} \ln \pi(a_{t}|s_{t};\theta)] \\
+$$
+因为轨迹的分布$p(\tau;\theta)$是未知的，所以可以使用经验平均**找一个无偏估计**的方法去近似$\nabla J(\theta)$
+$$
+\nabla \hat{J}(\theta)=\frac{1}{m}\sum_{n=1}^{m}\sum_{t=1}^{T-1}[R(\tau_{n}) \sum_{t=1}^{T-1} \nabla_{\theta} \ln \pi(a_{t,n}|s_{t,n};\theta)]
+$$
+ 其中$\tau_{n}=(s_{1,n},a_{1,n},s_{2,n},a_{2,n},...)$
+
+### Slide 10 采样方法
+
+MC 采样
+
+importance sampling 
+
+recieve- reject sampling
+
+### Slide 11 Baseline REINFORCE Variance=0
 
 
-### Slide 10
 
 **Conditional Probability**
 
@@ -408,19 +442,7 @@ why it's so important?
 
 In Machine Learning, e.g. MLE
 
-
-
-### Slide 11
-
-**Conditional Probability**
-
-a simple example:
-
-
-
-why it's so important?
-
-In Machine Learning, e.g. MLESlide 1
+# Slide 11
 
 **Conditional Probability**
 
