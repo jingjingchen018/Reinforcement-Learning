@@ -56,7 +56,7 @@ $DKL(p||q)==∫[log(p(x))−log(q(x))]p(x) dx∫[ p(x)log(p(x))−p(x)log(q(x))]
 
 
 
-
+## (四)
 
 
 

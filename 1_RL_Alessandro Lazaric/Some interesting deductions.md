@@ -54,9 +54,13 @@ The objective of REINFORCE:
 
 
 $$
-J(\theta):= 
+J(\theta):=
 $$
 
 
-The objective of TRPO:
+The objective of TRPO: 
+
+ ## (3)  Inequalities
+
+
 

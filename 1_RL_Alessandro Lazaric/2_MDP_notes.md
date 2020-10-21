@@ -2,9 +2,13 @@
 
 events: 
 
+
+
 a simple example:
 
+掷两枚硬币，事件$A$={其中一枚硬币正面朝上} 事件 $B$={两枚都正面朝上}
 
+$P(A)$=$\frac{3}{4}$,$P(B)$=$\frac{1}{4}$, $P(B||A)$=$\frac{1}{4}/\frac{3}{4}=$、frac{1}{3},
 
 why it's so important?
 
@@ -23,6 +27,16 @@ a simple example:
 why it's so important?
 
 
+
+
+
+## Slide 4 Norm and Constraction 
+
+
+
+
+
+## Slide 3 Banach Fixed theorm
 
 
 
@@ -58,15 +72,17 @@ P_{11} & \cdots & P_{1n}\\
 P_{n1} & \cdots & P_{nn}
 \end{bmatrix}
 $$
+![image-20201018152914613](/Users/chenjingjing/Library/Application Support/typora-user-images/image-20201018152914613.png)
 
 
-![image-20201015145724448](/Users/chenjingjing/Library/Application Support/typora-user-images/image-20201015145724448.png)
 
 如图1.2所示为一个学生的7种状态{娱乐，课程1，课程2， 课程3，考过，睡觉，论文}，每种状态之间的转移概率如图所知。则该生从课程1开始一天可能的状态序列为：
 
 课1-课2-课3-考过-睡觉
 
 课1-课2-睡觉
+
+![image-20201018153309254](/Users/chenjingjing/Library/Application Support/typora-user-images/image-20201018153309254.png)
 
 这样的状态序列称为马尔可夫链。
 
@@ -103,9 +119,9 @@ a simple example:
 
 
 
-![image-20201015154613414](/Users/chenjingjing/Library/Application Support/typora-user-images/image-20201015154613414.png)
+![image-20201018152914613](/Users/chenjingjing/Library/Application Support/typora-user-images/image-20201018152914613.png)
 
-学生有五个状态，状态集$S=\left\{s_{1},s_{2},s_{3},s_{4},s_{5}\right\}$,动作集为$A=\left\{玩，退出，学习，发论文，睡觉\right\}$, immediate reward 用红色标记。$R=r(s,a)$
+学生有七个状态，状态集$S=\left\{s_{1},s_{2},s_{3},s_{4},s_{5},s_{6},s_{7}\right\}$,动作集为$A=\left\{玩，退出，学习，发论文，睡觉\right\}$, immediate reward 用红色标记。$R_{s}=\mathbb{E}[R_{t+1}|S_{t}=s]$
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -176,10 +192,6 @@ Note: 强化学习中采取更多的是随机策略。因为随机不会带来�
 
 言归正传，公式(1.1)的含义是：策略![[公式]](https://www.zhihu.com/equation?tex=%5Cpi)在每个状态![[公式]](https://www.zhihu.com/equation?tex=s) 指定一个动作概率。如果给出的策略![[公式]](https://www.zhihu.com/equation?tex=%5Cpi)是确定性的，那么策略![[公式]](https://www.zhihu.com/equation?tex=%5Cpi)在每个状态![[公式]](https://www.zhihu.com/equation?tex=s)指定一个确定的动作。
 
-> 例如其中一个学生的策略为![[公式]](https://www.zhihu.com/equation?tex=%5C%5B+%5Cpi_1%5Cleft%28%5Ctextrm%7B%E7%8E%A9%7D%7Cs_1%5Cright%29%3D0.8+%5C%5D)，是指该学生在状态![[公式]](https://www.zhihu.com/equation?tex=s_1) 时玩的概率为0.8，不玩的概率是0.2，显然这个学生更喜欢玩。
->
-> 另外一个学生的策略为![[公式]](https://www.zhihu.com/equation?tex=%5Cpi_2%5Cleft%28%5Ctextrm%7B%E7%8E%A9%7D%7Cs_1%5Cright%29%3D0.3)，是指该学生在状态![[公式]](https://www.zhihu.com/equation?tex=s_1)时玩的概率是0.3，显然这个学生不爱玩。依此类推，每学生都有自己的策略。强化学习是找到最优的策略，这里的最优是指得到的总回报最大。
-
 
 
 给定policy $\pi$, 从起始状态$S_{1}$出发， 我们可以获得多条trajectory,
@@ -224,25 +236,22 @@ $$
 
 ### Slide 5 V(s) 和Q(s,a) 的Bellman 方程
 
-*为什么要用bellman equation?? 这个就是直接的贝尔曼方程么？*
-
 **state value function**
 $$
 V_{\pi}(s)  =\mathbb{E}_{\pi}\left[\sum_{k=0}^{\infty}\gamma^{k} R_{t+k+1}|S_{t}=s\right]\\
 =\mathbb{E}_{\pi}\left[G_{t} | S_{t}=s\right]\\
   =\mathbb{E}_{\pi}\left[R_{t+1}+\gamma G_{t+1} | S_{t}=s\right]\\
-  =\mathbb{E}_{S_{t},S_{t+1},\cdots}\left[R_{t+1}+\gamma G_{t+1} | S_{t}=s\right]\\
-这里不要（a）也行
+  =\mathbb{E}_{S_{t},A_{t},S_{t+1},A_{t+1}\cdots}\left[R_{t+1}+\gamma G_{t+1} | S_{t}=s\right]\\
  \stackrel{(a)}=\mathbb{E}_{S_{t}}[R_{t+1}+\gamma \mathbb{E}_{S_{t+1},\cdots}[G_{t+1}] | S_{t}=s]\\
   \stackrel{(b)}=\mathbb{E}_{S_{t}}[R_{t+1}+\gamma \mathbb{E}_{S_{t+1},\cdots}[G_{t+1}|S_{t+1}] | S_{t}=s]\\
 \stackrel{(c)}=\mathbb{E}_{S_{t}}[R_{t+1}+\gamma V_{\pi}(S_{t+1})|S_{t}=s]\\
     \stackrel{(d)}=\mathbb{E}_{\pi}[R_{t+1}+\gamma V_{\pi}(S_{t+1})|S_{t}=s]\\ 按照条件期望公式展开,\pi 决定了在状态S_{t}要采取的动作\\
+      \stackrel{(m)}=R_{s}+\gamma \sum_{s^{\prime}}P(s^{\prime}|s) V_{\pi}(s^{\prime})\\ 
         \stackrel{(e)}=\sum_{a\in A}\pi(a|s)[r(s,a)+\gamma \sum_{s^{\prime}}P(s^{\prime}|s,a)V_{\pi}(s^{\prime})]\\
        \stackrel{(f)}= \sum_{a\in A}\pi(a|s)r(s,a)+\gamma \sum_{a\in A}\pi(a|s)\sum_{s^{\prime}}P(s^{\prime}|s,a)V_{\pi}(s^{\prime})\\
-       \stackrel{(g交换变量求和顺序)}= \sum_{a\in A}\pi(a|s)r(s,a)+\gamma \sum_{s^{\prime}} \sum_{a\in A}\pi(a|s)P(s^{\prime}|s,a)V_{\pi}(s^{\prime})\\
-       \stackrel{(h)}= r(s,\pi(s))+\gamma \sum_{s^{\prime}} P(s^{\prime}|s)V_{\pi}(s^{\prime})\\
-         \stackrel{(i)}= r(s,\pi(s))+\gamma \sum_{s^{\prime}} P(s^{\prime}|s,\pi(s))V_{\pi}(s^{\prime})\\
-       这里的r(s,\pi(s)) 既可以是deterministic,也可stochastic的回报\\
+       \stackrel{(g交换变量求和顺序\ S policy)}= \sum_{a\in A}\pi(a|s)r(s,a)+\gamma \sum_{s^{\prime}} \sum_{a\in A}\pi(a|s)P(s^{\prime}|s,a)V_{\pi}(s^{\prime})\\
+         \stackrel{(h\ D policy)}= r(s,\pi(s))+\gamma \sum_{s^{\prime}} P(s^{\prime}|s,\pi(s))V_{\pi}(s^{\prime})\\
+
         写成向量的形式\\        
         V=R+\gamma PV\\
         V=(I-\gamma P)^{-1}R
@@ -255,7 +264,11 @@ $$
 
 ​			(d) 期望的脚标可以改成 $\pi$。
 
+​       这里的$r(s,\pi(s))$ 既可以是deterministic,也可stochastic的回报\\
+
  $ (\mathbb{E}[\mathbb{E}[S|N]]=\mathbb{E}[S])$
+
+![image-20201018162103866](/Users/chenjingjing/Library/Application Support/typora-user-images/image-20201018162103866.png)
 
 **state-action value function**
 
@@ -324,16 +337,6 @@ s_{1}\rightarrow s_{2}\rightarrow s_{3}\rightarrow s_{5}\\
 $$
 那么利用计算累计回报的公式，计算$G_{1}$, 这时$G_{1}$就有多个可能的值。
 
-![image-20201015203535936](/Users/chenjingjing/Library/Application Support/typora-user-images/image-20201015203535936.png)
-
-对于这个例子，状态值函数的计算。首先假设
-$$
-v_{\pi}(s_{1})=-1+0.5
-$$
-
-
-
-
 ### Slide 8
 
 (1) 对于离散时间有限范围的带折扣的MDP$M=(S,A,P,r,\gamma,\rho_{0},T)$
@@ -347,6 +350,9 @@ $$
 \max_{\pi}\int R(\tau)p_{\pi}(\tau)d\tau\\
 =\max_{\pi}\mathrm{E}_{\tau \sim \rho(\tau)}[\sum_{t=0}^{T}\gamma^{t}r(s_{t},a_{t})]
 $$
+**此时问题转化成为一个优化问题，可以用最速下降法、牛顿法、内点法，拉格朗日对偶。等进行求解。**
+
+
 
 ### Slide 7  policy gradient method
 
@@ -383,7 +389,7 @@ $$
 
 所以都是默认deterministic policy?????????????????
 
-$\pi_{\theta}$ 相应的期望值就是
+$\pi_{\theta}$ 相应的期望值就是（对轨迹求期望）
 $$
 J(\theta):=\mathrm{E}_{\tau \sim p(\tau; \theta)}[\sum_{t=1}^{T}\gamma^{t}r(s_{t},a_{t})]\\
 =\int R(\tau)p(\tau;\theta)d\tau \tag{9.2}
@@ -392,11 +398,17 @@ $$
 $$
 p(\tau;\theta)=p(s_{1})\prod_{t=1}^{T-1}p(s_{t+1}|s_{t},a_{t})\pi(a_{t}|s_{t};\theta)
 $$
-要求optimal policy,即求最优的参数$\theta^{*}$
+$\pi(a_{t}|s_{t};\theta)$ ：参数化为$\theta$的随机策略，它表示在状态$s$下，选择动作$a$的条件概率密度。
+
+**Policy Gradient method **
+
+
+
+直接策略搜索的目标是找到要求optimal policy, 使得期望的回报$J(\theta)$最大。即求最优的参数$\theta^{*}$
 $$
 \theta^{*}=\arg\max_{\theta}J(\theta)
 $$
-但是$J(\theta)$并不好求，这时候我们通过对其求导来更新参数
+但是$J(\theta)$并不好求，这时候我们通过基于梯度的方法来寻找$J(\theta)$的局部最大值。通过对其求导来更新参数（梯度上升方法）
 $$
 \theta_{n+1}=\theta_{n}+\alpha\nabla J(\theta_{n})
 $$
@@ -414,199 +426,144 @@ p(s_{1})\prod_{t=1}^{T-1}p(s_{t+1}|s_{t},a_{t})\pi(a_{t}|s_{t};\theta) 求ln之�
 \theta 求导为0  \\
 = \mathrm{E}_{\tau \sim p(\tau;\theta)}[R(\tau) \sum_{t=1}^{T-1} \nabla_{\theta} \ln \pi(a_{t}|s_{t};\theta)] \\
 $$
-因为轨迹的分布$p(\tau;\theta)$是未知的，所以可以使用经验平均**找一个无偏估计**的方法去近似$\nabla J(\theta)$
+因为轨迹的分布$p(\tau;\theta)$是未知的，所以可以使用经验平均**找一个无偏估计**去近似$\nabla J(\theta)$
 $$
-\nabla \hat{J}(\theta)=\frac{1}{m}\sum_{n=1}^{m}\sum_{t=1}^{T-1}[R(\tau_{n}) \sum_{t=1}^{T-1} \nabla_{\theta} \ln \pi(a_{t,n}|s_{t,n};\theta)]
+\nabla \hat{J}(\theta)=\frac{1}{m}\sum_{n=1}^{m}[R(\tau_{n}) \sum_{t=1}^{T-1} \nabla_{\theta} \ln \pi(a_{t,n}|s_{t,n};\theta)]
 $$
  其中$\tau_{n}=(s_{1,n},a_{1,n},s_{2,n},a_{2,n},...)$
 
 ### Slide 10 采样方法
 
-MC 采样
+MC 采样（经验平均）
+
+所有的蒙特卡洛采样方法的一个共同的特点就是 
+
+
 
 importance sampling 
 
-recieve- reject sampling
+Sampling-importance-resampling 
 
-### Slide 11 Baseline REINFORCE Variance=0
-
-
-
-**Conditional Probability**
-
-a simple example:
+reject sampling
 
 
 
-why it's so important?
+### Slide 11 REINFORCE with Baseline (目的：减小方差)Variance
 
-In Machine Learning, e.g. MLE
+因为 
+$$
+\nabla \tilde{J}(\theta)=\frac{1}{m}\sum_{n=1}^{m}[(R(\tau_{n})- B)\sum_{t=1}^{T-1} \nabla_{\theta} \ln \pi(a_{t,n}|s_{t,n};\theta)]
+$$
+又因为
+$$
+\mathbb{E}[B\sum_{t=1}^{T-1} \nabla_{\theta} \ln \pi(a_{t}|s_{t};\theta)]=B\mathbb{E}[\sum_{t=1}^{T-1} \nabla_{\theta} \ln \pi(a_{t}|s_{t};\theta)]\\
+= B\sum_{t=1}^{T-1}\mathbb{E}[\nabla_{\theta} \ln \pi(a_{t}|s_{t};\theta)]\\=\mathbb{E}[B\sum_{t=1}^{T-1} \nabla_{\theta} \ln \pi(a_{t}|s_{t};\theta)]=B\mathbb{E}[\sum_{t=1}^{T-1} \nabla_{\theta} \ln \pi(a_{t}|s_{t};\theta)]\\
+= B\sum_{t=1}^{T-1}\mathbb{E}[\nabla_{\theta} \ln \pi(a_{t}|s_{t};\theta)]\\
+=B\sum_{t=1}^{T-1}\int[\pi(a_{t}|s_{t};\theta)\nabla_{\theta} \ln \pi(a_{t}|s_{t};\theta)]da_{t}\\
+=B\sum_{t=1}^{T-1}\int[\nabla_{\theta} \pi(a_{t}|s_{t};\theta)]da_{t}\\
+=B\sum_{t=1}^{T-1}\nabla_{\theta}\int[\pi(a_{t}|s_{t};\theta)]da_{t}\\
+=B\sum_{t=1}^{T-1}\nabla_{\theta}1=0\\
+不要B 和求和公式也可以\int\pi(a|s;\theta)da=1)\\
+p(\tau;\theta)=p(s_{1})\prod_{t=1}^{T-1}p(s_{t+1}|s_{t},a_{t})\pi(a_{t}|s_{t};\theta)
+$$
+所以我们得到
+$$
+\mathbb{E}[\nabla \tilde{J}(\theta)]\\
+=\mathbb{E}[(R(\tau)- B)\sum_{t=1}^{T-1} \nabla_{\theta} \ln \pi(a_{t}|s_{t};\theta)]\\=
+\mathbb{E}[R(\tau)\sum_{t=1}^{T-1} \nabla_{\theta} \ln \pi(a_{t}|s_{t};\theta)- B\sum_{t=1}^{T-1} \nabla_{\theta} \ln \pi(a_{t}|s_{t};\theta)]\\
 
-# Slide 11
+=\mathbb{E}[R(\tau)\sum_{t=1}^{T-1} \nabla_{\theta} \ln \pi(a_{t}|s_{t};\theta)] \\
+= \mathbb{E}[\nabla \hat{J}(\theta)]
+$$
+这样仍是一个无偏估计，但是加了baseline 之后减少了方差。
 
-**Conditional Probability**
+## Slide 12 Actor-Critic 
 
-a simple example:
-
-
-
-why it's so important?
-
-In Machine Learning, e.g. MLE
-
-### Slide 12
-
-**Conditional Probability**
-
-a simple example:
-
-
-
-why it's so important?
-
-In Machine Learning, e.g. MLE
-
-### Slide 13
-
-**Conditional Probability**
-
-a simple example:
-
+将B 定义为另一个网络的value, 参数化它$\omega$，调baseline ,即调参数$\omega$, 学value 的参数$\theta$，不依赖于a，再学policy的参数$\omega$, 此时可以用AC 的框架。
 
 
-why it's so important?
 
-In Machine Learning, e.g. MLE
+### Slide 12 *Gauss 策略模型*
+
+(已在纸上推导)
+
+（36）式中的动作是连续的，可以将其直接定义为Gauss policy，将$(\mu,\sigma)$参数化，用网络去近似。
+
+![image-20201018101641393](/Users/chenjingjing/Library/Application Support/typora-user-images/image-20201018101641393.png)
+
+### Slide 13  TRPO
+
+因为直接优化$J(\theta)$ 有难度，所以用surrogate 的方法去近似这个函数。e.g. $G(\theta)$,  
+
+使用信赖域的方法，policy  $\pi$ 是一个分布，在 分布$\pi$ 里面找一个邻域$\hat{\pi}$, 使得二者之间的距离 小于 $\epsilon$.
+
+如何定义两个分布之间的距离？$KL-Divergence$
+
+
+
+
+
+
+
+参数优化方法包括线性参数优化、非线性参数优化
+
+
+
+非参数优化方法 包括
+
+
+
+
+
+优化中找信赖域
+
+ GAN
+
+鲁棒优化
+
+
 
 ### Slide 14
 
-**Conditional Probability**
 
-a simple example:
-
-
-
-why it's so important?
-
-In Machine Learning, e.g. MLE
 
 ### Slide 15
 
-**Conditional Probability**
 
-a simple example:
-
-
-
-why it's so important?
-
-In Machine Learning, e.g. MLE
 
 ### Slide 16
 
-**Conditional Probability**
 
-a simple example:
-
-
-
-why it's so important?
-
-In Machine Learning, e.g. MLE
 
 ### Slide 17
 
-**Conditional Probability**
 
-a simple example:
-
-
-
-why it's so important?
-
-In Machine Learning, e.g. MLE
 
 ### Slide 18
 
-**Conditional Probability**
 
-a simple example:
-
-
-
-why it's so important?
-
-In Machine Learning, e.g. MLE
 
 ### Slide 19
 
-**Conditional Probability**
 
-a simple example:
-
-
-
-why it's so important?
-
-In Machine Learning, e.g. MLE
 
 ### Slide 20
 
-**Conditional Probability**
 
-a simple example:
-
-
-
-why it's so important?
-
-In Machine Learning, e.g. MLE
 
 ### Slide 21
 
-**Conditional Probability**
 
-a simple example:
-
-
-
-why it's so important?
-
-In Machine Learning, e.g. MLE
 
 ### Slide 22
 
-**Conditional Probability**
 
-a simple example:
-
-
-
-why it's so important?
-
-In Machine Learning, e.g. MLE
 
 ### Slide 23
 
-**Conditional Probability**
 
-a simple example:
-
-
-
-why it's so important?
-
-In Machine Learning, e.g. MLE
 
 ### Slide 24
 
-**Conditional Probability**
 
-a simple example:
-
-
-
-why it's so important?
-
-In Machine Learning, e.g. MLE
 
